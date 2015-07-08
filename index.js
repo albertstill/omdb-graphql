@@ -1,2 +1,2 @@
 require("babel/register");
-require("./api.js")
+require("./app/api.js")
