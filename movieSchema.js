@@ -59,6 +59,10 @@ var movieType = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLString),
       description: 'The title of the movie'
     },
+    director: {
+      type: GraphQLString,
+      description: 'The director'
+    },
     actors: {
       type: new GraphQLList(GraphQLString),
       description: 'Actors in the movie'
@@ -71,9 +75,17 @@ var movieType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'Release date'
     },
-    year: {
-      type: new GraphQLNonNull(GraphQLString),
-      description: 'The release date of the movie'
+    plot: {
+      type: GraphQLString,
+      description: 'The plot'
+    },
+    awards: {
+      type: GraphQLString,
+      description: 'The awards'
+    },
+    poster: {
+      type: GraphQLString,
+      description: 'A poster image'
     },
     type: {
       type: typeEnum,

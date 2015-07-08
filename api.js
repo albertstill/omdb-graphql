@@ -9,11 +9,10 @@ server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
-server.post('/graphql', (req, res, next) => {
+server.post('/', (req, res, next) => {
   graphql(MovieSchema, req.body).then((result) => {
     res.send(result)
   });
-  return next();
 });
 
 server.listen(process.env.PORT || 8080, () => {
