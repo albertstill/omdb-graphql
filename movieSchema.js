@@ -6,6 +6,8 @@ import {
   GraphQLNonNull,
   GraphQLSchema,
   GraphQLString,
+  GraphQLInt,
+  GraphQLFloat
 } from 'graphql';
 import Promise from 'bluebird';
 import omdb from 'omdb';
@@ -28,6 +30,25 @@ var typeEnum = new GraphQLEnumType({
       description: 'each of the separate instalments into which a television programme is divided'
     },
   }
+});
+
+var imdbType = new GraphQLObjectType({
+  name: 'IMDb',
+  description: 'IMDb specific fields',
+  fields: () => ({
+    id: {
+      type: GraphQLString,
+      description: 'The IMDb id of the movie'
+    },
+    rating: {
+      type: GraphQLFloat,
+      description: 'IMDb rating'
+    },
+    votes: {
+      type: GraphQLInt,
+      description: 'IMDb votes'
+    }
+  })
 });
 
 var movieType = new GraphQLObjectType({
@@ -57,6 +78,10 @@ var movieType = new GraphQLObjectType({
     type: {
       type: typeEnum,
       description: 'Wether its a movie, series or episode'
+    },
+    imdb: {
+      type: imdbType,
+      description: 'IMDb specific fields'
     }
   })
 });
