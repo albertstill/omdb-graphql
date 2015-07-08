@@ -7,14 +7,15 @@ import {
   GraphQLSchema,
   GraphQLString,
   GraphQLInt,
-  GraphQLFloat
+  GraphQLFloat,
+  GraphQLID
 } from 'graphql';
 import Promise from 'bluebird';
 import omdb from 'omdb';
 Promise.promisifyAll(omdb);
 
 var typeEnum = new GraphQLEnumType({
-  name: 'Type',
+  name: 'MovieType',
   description: 'A movie, series, or and episode',
   values: {
     MOVIE: {
@@ -33,12 +34,12 @@ var typeEnum = new GraphQLEnumType({
 });
 
 var imdbType = new GraphQLObjectType({
-  name: 'IMDb',
+  name: 'Imdb',
   description: 'IMDb specific fields',
   fields: () => ({
     id: {
-      type: GraphQLString,
-      description: 'The IMDb id of the movie'
+      type: GraphQLID,
+      description: 'IMDb id'
     },
     rating: {
       type: GraphQLFloat,
@@ -53,11 +54,11 @@ var imdbType = new GraphQLObjectType({
 
 var movieType = new GraphQLObjectType({
   name: 'Movie',
-  description: 'A movie',
+  description: 'A movie, series or episode',
   fields: () => ({
     title: {
       type: new GraphQLNonNull(GraphQLString),
-      description: 'The title of the movie'
+      description: 'The title'
     },
     director: {
       type: GraphQLString,
@@ -65,11 +66,11 @@ var movieType = new GraphQLObjectType({
     },
     actors: {
       type: new GraphQLList(GraphQLString),
-      description: 'Actors in the movie'
+      description: 'List of starring actors'
     },
     writers: {
       type: new GraphQLList(GraphQLString),
-      description: 'Writers of the movie'
+      description: 'List of the writers'
     },
     released: {
       type: GraphQLString,
@@ -85,11 +86,11 @@ var movieType = new GraphQLObjectType({
     },
     poster: {
       type: GraphQLString,
-      description: 'A poster image'
+      description: 'A poster image URL'
     },
     type: {
       type: typeEnum,
-      description: 'Wether its a movie, series or episode'
+      description: 'Whether its a movie, series or episode'
     },
     imdb: {
       type: imdbType,
@@ -103,16 +104,20 @@ var queryType = new GraphQLObjectType({
   fields: () => ({
     funniestSeriesEver: {
       type: movieType,
-      resolve: (root, {title}) => { return omdb.getAsync({ title: 'Silicon Valley' }) }
+      description: "Alberts favourite TV series. What's got two thumbs and 3 commas?",
+      resolve: () => omdb.getAsync({ imdb: 'tt2575988' })
     },
     movie: {
       type: movieType,
-      args: {title: { name: 'title', type: new GraphQLNonNull(GraphQLString)}},
+      description: 'Find a movie, series or epidsode by its title',
+      args: {
+        title: {
+          name: 'title',
+          type: new GraphQLNonNull(GraphQLString)
+        }
+      },
       resolve: (root, {title}) => {
-        return omdb.getAsync(title).then(result => {
-          console.log(result)
-          return result
-        });
+        return omdb.getAsync(title);
       }
     }
   })
