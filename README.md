@@ -1,5 +1,5 @@
 # omdb-graphql
-A GraphQL adapter for http://www.omdbapi.com/
+A GraphQL adapter for http://www.omdbapi.com/. I wrote this app for my [blog](http://red-badger.com/blog/2015/07/09/graphql-and-the-open-movie-database-from-introspection-to-inception/).
 
 ## Run a query against this app on Heroku
 Send `POST` requests to `https://omdb-graphql.herokuapp.com` with a raw GraphQL query in the body. I suggest using [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en).
