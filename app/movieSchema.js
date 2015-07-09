@@ -111,10 +111,7 @@ var queryType = new GraphQLObjectType({
       type: movieType,
       description: 'Find a movie, series or epidsode by its title',
       args: {
-        title: {
-          name: 'title',
-          type: new GraphQLNonNull(GraphQLString)
-        }
+        title: { type: new GraphQLNonNull(GraphQLString) }
       },
       resolve: (root, {title}) => {
         return omdb.getAsync(title);
